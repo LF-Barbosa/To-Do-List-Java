@@ -93,8 +93,24 @@ public class frmTarefa extends javax.swing.JFrame {
         modelo_lista_afazer.removeAllElements();
         for (Tarefa t : tarefas) {
             if ("A Fazer".equals(t.getStatus())) {
-                modelo_lista_afazer.addElement(t.getTitulo());
+                modelo_lista_afazer.addElement(t.getId() + " - " + t.getTitulo());
             }
+        }
+    }
+    
+    public ArrayList<Tarefa> procuraTarefa () {
+        ArrayList<Tarefa> tarefasEncontradas = new ArrayList();
+        if (listAfazer.getSelectedIndices().length > 0) {
+            for (Tarefa t : tarefas) {
+                for(String s : listAfazer.getSelectedValuesList()) {
+                    if (s.equals(t.getTitulo())) {
+                        tarefasEncontradas.add(t);
+                    }
+                }
+            }            
+            return tarefasEncontradas;
+        } else {
+            return null;
         }
     }
         
@@ -518,6 +534,7 @@ public class frmTarefa extends javax.swing.JFrame {
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         Tarefa t = new Tarefa();
         
+        t.setId(tarefas.size());
         t.setTitulo(txtTitulo.getText());
         t.setDescricao(txtDescricao.getText());
         t.setPrioridade(cbPrioidade.getSelectedItem().toString());
@@ -544,7 +561,14 @@ public class frmTarefa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-        // TODO add your handling code here:
+//        for (int i : listAfazer.getSelectedIndices()) {
+//            tarefas.get(i).setStatus("Fazendo");
+//            tarefas.get(i);
+//        }
+        System.out.println(listAfazer.getSelectedValuesList());
+        preencherTabelaFazendo();
+        preencherListaAbaFazendo();
+        
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void btnIniciar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciar1ActionPerformed
@@ -633,4 +657,8 @@ public class frmTarefa extends javax.swing.JFrame {
     private javax.swing.JTextArea txtDescricao;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
+
+    private boolean Arrays(int[] selectedIndices) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

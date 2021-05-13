@@ -9,6 +9,7 @@
  * @author Luis Felipe
  */
 public class Tarefa {
+    private Integer id;
     private String titulo;
     private String descricao;
     private String prioridade;
@@ -16,6 +17,14 @@ public class Tarefa {
 
     public Tarefa() {
         
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
     
     public String getTitulo() {
