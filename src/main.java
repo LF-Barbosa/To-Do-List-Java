@@ -6,7 +6,7 @@
 
 /**
  *
- * @author luisf
+ * @author Luis Felipe
  */
 public class main {
 
@@ -14,7 +14,8 @@ public class main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        frmTarefa frm = new frmTarefa();
+        frm.setVisible(true);
     }
     
 }
