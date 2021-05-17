@@ -565,7 +565,10 @@ public class frmTarefa extends javax.swing.JFrame {
 //            tarefas.get(i).setStatus("Fazendo");
 //            tarefas.get(i);
 //        }
-        System.out.println(listAfazer.getSelectedValuesList());
+        int index = listAfazer.getSelectedValue().indexOf(" ");
+        System.out.println(listAfazer.getSelectedValuesList().iterator().toString().substring(0, index));
+        
+        //System.out.println(listAfazer.getSelectedValue().substring(0, index));
         preencherTabelaFazendo();
         preencherListaAbaFazendo();
         
