@@ -510,7 +510,7 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  <Component id="btnIniciar1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnConcluir" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
@@ -530,7 +530,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jScrollPane5" min="-2" pref="312" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnIniciar1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnConcluir" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="184" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -564,7 +564,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="btnIniciar1">
+                <Component class="javax.swing.JButton" name="btnConcluir">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Arial" size="12" style="1"/>
@@ -572,7 +572,7 @@
                     <Property name="text" type="java.lang.String" value="CONCLUIR"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIniciar1ActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConcluirActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

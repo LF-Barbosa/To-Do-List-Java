@@ -3,7 +3,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -59,6 +63,7 @@ public class frmTarefa extends javax.swing.JFrame {
         tblFeito.setModel(modelo_Feito);
         
         listAfazer.setModel(modelo_lista_afazer);
+        listFazendo.setModel(modelo_lista_fazendo);
     }
     
     void preencherTabelaTarefa () {
@@ -89,6 +94,22 @@ public class frmTarefa extends javax.swing.JFrame {
                 
     }
     
+    void preencherTabelaFeito () {
+        modelo_Feito.setNumRows(0);
+        
+        for (Tarefa t : tarefas) {
+            if ("Feito".equals(t.getStatus())) {
+                modelo_Feito.addRow(new Object[] {
+                    t.getTitulo(),
+                    t.getDescricao(),
+                    t.getPrioridade(),
+                    t.getStatus()
+                });
+            }
+        }
+                
+    }
+    
     public void preencherListaAbaFazendo () {
         modelo_lista_afazer.removeAllElements();
         for (Tarefa t : tarefas) {
@@ -98,22 +119,15 @@ public class frmTarefa extends javax.swing.JFrame {
         }
     }
     
-    public ArrayList<Tarefa> procuraTarefa () {
-        ArrayList<Tarefa> tarefasEncontradas = new ArrayList();
-        if (listAfazer.getSelectedIndices().length > 0) {
-            for (Tarefa t : tarefas) {
-                for(String s : listAfazer.getSelectedValuesList()) {
-                    if (s.equals(t.getTitulo())) {
-                        tarefasEncontradas.add(t);
-                    }
-                }
-            }            
-            return tarefasEncontradas;
-        } else {
-            return null;
+    public void preencherListaAbaFeito () {
+        modelo_lista_fazendo.removeAllElements();
+        for (Tarefa t : tarefas) {
+            if ("Fazendo".equals(t.getStatus())) {
+                modelo_lista_fazendo.addElement(t.getId() + " - " + t.getTitulo());
+            }
         }
     }
-        
+            
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -151,7 +165,7 @@ public class frmTarefa extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         listFazendo = new javax.swing.JList<>();
-        btnIniciar1 = new javax.swing.JButton();
+        btnConcluir = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -412,11 +426,11 @@ public class frmTarefa extends javax.swing.JFrame {
 
         jScrollPane5.setViewportView(listFazendo);
 
-        btnIniciar1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        btnIniciar1.setText("CONCLUIR");
-        btnIniciar1.addActionListener(new java.awt.event.ActionListener() {
+        btnConcluir.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnConcluir.setText("CONCLUIR");
+        btnConcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIniciar1ActionPerformed(evt);
+                btnConcluirActionPerformed(evt);
             }
         });
 
@@ -429,7 +443,7 @@ public class frmTarefa extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnIniciar1))
+                        .addComponent(btnConcluir))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -444,7 +458,7 @@ public class frmTarefa extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnIniciar1)
+                .addComponent(btnConcluir)
                 .addContainerGap(184, Short.MAX_VALUE))
         );
 
@@ -532,56 +546,75 @@ public class frmTarefa extends javax.swing.JFrame {
     }//GEN-LAST:event_cbPrioidadeActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        Tarefa t = new Tarefa();
+        if (txtTitulo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Insira o Título da tarefa", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else if (txtDescricao.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Insira a Descrição da tarefa", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else {      
         
-        t.setId(tarefas.size());
-        t.setTitulo(txtTitulo.getText());
-        t.setDescricao(txtDescricao.getText());
-        t.setPrioridade(cbPrioidade.getSelectedItem().toString());
-        t.setStatus("A Fazer");
-        tarefas.add(t);
-        
-        //Reordena a lista de tarefas deixando sempre as urgentes primeiro
-        Collections.sort(tarefas, (Object a, Object b) -> {
-            Tarefa t1 = (Tarefa) a;
-            Tarefa t2 = (Tarefa) b;
-            if ("Urgente".equals(t1.getPrioridade()) && "Urgente".equals(t2.getPrioridade())) {
-                return 0;
-            } else if ("Urgente".equals(t1.getPrioridade()) && "Pode esperar".equals(t2.getPrioridade())) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
-        
-        preencherTabelaTarefa();
-        preencherTabelaFazendo();
-        
+            Tarefa t = new Tarefa();
+
+            t.setId(tarefas.size());
+            t.setTitulo(txtTitulo.getText());
+            t.setDescricao(txtDescricao.getText());
+            t.setPrioridade(cbPrioidade.getSelectedItem().toString());
+            t.setStatus("A Fazer");
+            tarefas.add(t);
+
+            txtDescricao.setText("");
+            txtTitulo.setText("");
+
+            //Reordena a lista de tarefas deixando sempre as urgentes primeiro
+            Collections.sort(tarefas, (Object a, Object b) -> {
+                Tarefa t1 = (Tarefa) a;
+                Tarefa t2 = (Tarefa) b;
+                if ("Urgente".equals(t1.getPrioridade()) && "Urgente".equals(t2.getPrioridade())) {
+                    return 0;
+                } else if ("Urgente".equals(t1.getPrioridade()) && "Pode esperar".equals(t2.getPrioridade())) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+
+            preencherTabelaTarefa();
+        }
         
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-//        for (int i : listAfazer.getSelectedIndices()) {
-//            tarefas.get(i).setStatus("Fazendo");
-//            tarefas.get(i);
-//        }
-        int index = listAfazer.getSelectedValue().indexOf(" ");
-        System.out.println(listAfazer.getSelectedValuesList().iterator().toString().substring(0, index));
         
-        //System.out.println(listAfazer.getSelectedValue().substring(0, index));
-        preencherTabelaFazendo();
-        preencherListaAbaFazendo();
+        if (listAfazer.getSelectedValuesList().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selecione pelo menos uma tarefa!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else {
+            for (String s : listAfazer.getSelectedValuesList()) {
+                tarefas.get(Integer.parseInt(s.substring(0, s.indexOf(" ")))).setStatus("Fazendo");
+            }
+            preencherTabelaFazendo();
+            preencherListaAbaFazendo();
+            preencherListaAbaFeito();
+        }
         
     }//GEN-LAST:event_btnIniciarActionPerformed
 
-    private void btnIniciar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciar1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnIniciar1ActionPerformed
+    private void btnConcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConcluirActionPerformed
+        if (listFazendo.getSelectedValuesList().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Selecione pelo menos uma tarefa!", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else {
+            for (String s : listFazendo.getSelectedValuesList()) {
+                tarefas.get(Integer.parseInt(s.substring(0, s.indexOf(" ")))).setStatus("Feito");
+            }
+            preencherTabelaFeito();
+            preencherListaAbaFazendo();
+            preencherListaAbaFeito();
+        }
+    }//GEN-LAST:event_btnConcluirActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         preencherTabelaFazendo();
         preencherTabelaTarefa();
         preencherListaAbaFazendo();
+        preencherListaAbaFeito();
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     /**
@@ -622,8 +655,8 @@ public class frmTarefa extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnConcluir;
     private javax.swing.JButton btnIniciar;
-    private javax.swing.JButton btnIniciar1;
     private javax.swing.JComboBox<String> cbPrioidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
