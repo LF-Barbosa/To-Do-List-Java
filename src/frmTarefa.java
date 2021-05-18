@@ -1,11 +1,6 @@
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -37,7 +32,6 @@ public class frmTarefa extends javax.swing.JFrame {
         preencherListaAbaFazendo();
         
     }
-    
 
     void modelarTabelas () {
         //Todas as tabela terão o mesmo modelo.
@@ -236,6 +230,7 @@ public class frmTarefa extends javax.swing.JFrame {
         });
 
         btnAdicionar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Save.png"))); // NOI18N
         btnAdicionar.setText("ADICIONAR");
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -329,6 +324,7 @@ public class frmTarefa extends javax.swing.JFrame {
         jScrollPane3.setViewportView(listAfazer);
 
         btnIniciar.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnIniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Play.png"))); // NOI18N
         btnIniciar.setText("INICIAR");
         btnIniciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -427,6 +423,7 @@ public class frmTarefa extends javax.swing.JFrame {
         jScrollPane5.setViewportView(listFazendo);
 
         btnConcluir.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnConcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Sucsses.png"))); // NOI18N
         btnConcluir.setText("CONCLUIR");
         btnConcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -569,10 +566,13 @@ public class frmTarefa extends javax.swing.JFrame {
                 Tarefa t1 = (Tarefa) a;
                 Tarefa t2 = (Tarefa) b;
                 if ("Urgente".equals(t1.getPrioridade()) && "Urgente".equals(t2.getPrioridade())) {
+                    // Retorna 0 quando são da mesma prioridade aí não altera a posição
                     return 0;
                 } else if ("Urgente".equals(t1.getPrioridade()) && "Pode esperar".equals(t2.getPrioridade())) {
+                    //Retorna -1 para colocar a tarefa a esquerda
                     return -1;
                 } else {
+                    // Retorna 1 para colocar a tarefa a direita
                     return 1;
                 }
             });
