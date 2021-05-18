@@ -13,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Usuário
+ * @author Luis Felipe David
  */
 public class frmTarefa extends javax.swing.JFrame {
 
